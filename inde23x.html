@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>شاركنا تقييمك</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #111827, #1f2937);
+      padding: 20px;
+    }
+
+    .rating-box {
+      width: 100%;
+      max-width: 450px;
+      background: #fff;
+      border-radius: 24px;
+      padding: 35px 25px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    }
+
+    .icon {
+      font-size: 45px;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      color: #111827;
+      font-size: 27px;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      font-size: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stars {
+      direction: ltr;
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      margin: 20px 0 10px;
+    }
+
+    .star {
+      font-size: 48px;
+      color: #d1d5db;
+      cursor: pointer;
+      transition: .2s;
+      user-select: none;
+    }
+
+    .star:hover,
+    .star.active {
+      color: #fbbf24;
+      transform: scale(1.08);
+    }
+
+    #ratingText {
+      height: 25px;
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      resize: vertical;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 18px;
+    }
+
+    textarea:focus {
+      border-color: #6366f1;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 15px;
+      background: #4f46e5;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    button:hover {
+      background: #4338ca;
+    }
+
+    button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .success {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 12px;
+      background: #ecfdf5;
+      color: #047857;
+      font-size: 15px;
+    }
+
+    .error {
+      display: none;
+      margin-top: 15px;
+      color: #dc2626;
+      font-size: 14px;
+    }
+
+    .footer {
+      margin-top: 22px;
+      color: #9ca3af;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="rating-box">
+
+  <div class="icon">⭐</div>
+
+  <h1>ما تقييمك لتجربتك؟</h1>
+
+  <p class="subtitle">
+    رأيك يهمنا ويساعدنا على تقديم تجربة أفضل
+  </p>
+
+  <!-- Formspree القديم -->
+  <form
+    id="ratingForm"
+    action="https://formspree.io/f/myzwyrjk"
+    method="POST"
+  >
+
+    <div class="stars">
+
+      <span class="star" data-rating="1">★</span>
+      <span class="star" data-rating="2">★</span>
+      <span class="star" data-rating="3">★</span>
+      <span class="star" data-rating="4">★</span>
+      <span class="star" data-rating="5">★</span>
+
+    </div>
+
+    <div id="ratingText">
+      اختر عدد النجوم
+    </div>
+
+    <input
+      type="hidden"
+      name="التقييم"
+      id="ratingInput"
+    >
+
+    <textarea
+      name="التعليق"
+      placeholder="اكتب رأيك هنا... (اختياري)"
+    ></textarea>
+
+    <button
+      type="submit"
+      id="submitBtn"
+    >
+      إرسال التقييم
+    </button>
+
+    <div class="success" id="successMessage">
+      ✅ تم إرسال تقييمك بنجاح، شكرًا لك!
+    </div>
+
+    <div class="error" id="errorMessage">
+      ❌ حدث خطأ أثناء الإرسال، حاول مرة أخرى.
+    </div>
+
+  </form>
+
+  <div class="footer">
+    شكرًا لمشاركتك رأيك ❤️
+  </div>
+
+</div>
+
+
+<script>
+
+const stars = document.querySelectorAll(".star");
+const ratingInput = document.getElementById("ratingInput");
+const ratingText = document.getElementById("ratingText");
+
+const ratingNames = {
+  1: "سيئ جدًا 😞",
+  2: "سيئ 😕",
+  3: "متوسط 😐",
+  4: "جيد 🙂",
+  5: "ممتاز جدًا 🤩"
+};
+
+let selectedRating = 0;
+
+
+/* اختيار النجوم */
+stars.forEach(star => {
+
+  star.addEventListener("click", () => {
+
+    selectedRating = Number(star.dataset.rating);
+
+    ratingInput.value = selectedRating + " / 5";
+
+    stars.forEach(s => {
+
+      const value = Number(s.dataset.rating);
+
+      if (value <= selectedRating) {
+        s.classList.add("active");
+      } else {
+        s.classList.remove("active");
+      }
+
+    });
+
+    ratingText.textContent =
+      ratingNames[selectedRating];
+
+  });
+
+
+  /* تأثير المرور بالماوس */
+  star.addEventListener("mouseover", () => {
+
+    const hoverRating = Number(star.dataset.rating);
+
+    stars.forEach(s => {
+
+      const value = Number(s.dataset.rating);
+
+      if (value <= hoverRating) {
+        s.classList.add("active");
+      } else {
+        s.classList.remove("active");
+      }
+
+    });
+
+  });
+
+});
+
+
+/* إعادة النجوم للتقييم المختار */
+document.querySelector(".stars").addEventListener("mouseleave", () => {
+
+  stars.forEach(s => {
+
+    const value = Number(s.dataset.rating);
+
+    if (value <= selectedRating) {
+      s.classList.add("active");
+    } else {
+      s.classList.remove("active");
+    }
+
+  });
+
+});
+
+
+/* إرسال التقييم */
+
+const form = document.getElementById("ratingForm");
+const submitBtn = document.getElementById("submitBtn");
+const successMessage = document.getElementById("successMessage");
+const errorMessage = document.getElementById("errorMessage");
+
+
+form.addEventListener("submit", async function(e) {
+
+  e.preventDefault();
+
+  if (selectedRating === 0) {
+
+    alert("⭐ الرجاء اختيار عدد النجوم أولًا");
+    return;
+
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "جاري الإرسال...";
+
+  try {
+
+    const response = await fetch(form.action, {
+
+      method: "POST",
+
+      body: new FormData(form),
+
+      headers: {
+        "Accept": "application/json"
+      }
+
+    });
+
+
+    if (response.ok) {
+
+      successMessage.style.display = "block";
+      errorMessage.style.display = "none";
+
+      form.reset();
+
+      selectedRating = 0;
+
+      stars.forEach(star => {
+        star.classList.remove("active");
+      });
+
+      ratingText.textContent = "تم إرسال التقييم";
+
+      submitBtn.textContent = "تم الإرسال ✓";
+
+    } else {
+
+      throw new Error();
+
+    }
+
+  } catch (error) {
+
+    errorMessage.style.display = "block";
+    successMessage.style.display = "none";
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "إرسال التقييم";
+
+  }
+
+});
+
+</script>
+
+</body>
+</html>
