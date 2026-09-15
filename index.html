@@ -11,7 +11,6 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
     }
 
     body {
@@ -19,23 +18,25 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #111827, #1f2937);
       padding: 20px;
+      background: linear-gradient(135deg, #111827, #374151);
+      font-family: Arial, Tahoma, sans-serif;
     }
 
     .rating-box {
       width: 100%;
-      max-width: 450px;
-      background: #fff;
-      border-radius: 24px;
+      max-width: 460px;
       padding: 35px 25px;
+      background: #ffffff;
+      border-radius: 24px;
       text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
     }
 
     .icon {
-      font-size: 45px;
-      margin-bottom: 15px;
+      font-size: 48px;
+      line-height: 1;
+      margin-bottom: 18px;
     }
 
     h1 {
@@ -47,91 +48,109 @@
     .subtitle {
       color: #6b7280;
       font-size: 15px;
-      margin-bottom: 25px;
+      line-height: 1.7;
+      margin-bottom: 20px;
     }
 
+    /* النجوم */
     .stars {
       direction: ltr;
       display: flex;
       justify-content: center;
-      gap: 7px;
-      margin: 20px 0 10px;
+      align-items: center;
+      gap: 5px;
+      margin: 10px 0;
     }
 
     .star {
-      font-size: 48px;
+      border: 0;
+      background: transparent;
       color: #d1d5db;
+      font-size: 50px;
+      line-height: 1;
+      padding: 3px;
       cursor: pointer;
-      transition: .2s;
-      user-select: none;
+      transition: transform 0.2s ease, color 0.2s ease;
     }
 
-    .star:hover,
+    .star:hover {
+      transform: scale(1.1);
+    }
+
     .star.active {
       color: #fbbf24;
-      transform: scale(1.08);
     }
 
     #ratingText {
-      height: 25px;
+      min-height: 25px;
+      margin: 8px 0 20px;
       color: #6b7280;
       font-size: 14px;
-      margin-bottom: 20px;
     }
 
     textarea {
+      display: block;
       width: 100%;
-      min-height: 110px;
-      resize: vertical;
+      min-height: 115px;
+      padding: 14px;
+      margin-bottom: 18px;
       border: 1px solid #e5e7eb;
       border-radius: 14px;
-      padding: 14px;
-      font-size: 15px;
       outline: none;
-      margin-bottom: 18px;
+      resize: vertical;
+      font-family: inherit;
+      font-size: 15px;
+      line-height: 1.6;
+      direction: rtl;
     }
 
     textarea:focus {
-      border-color: #6366f1;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     }
 
-    button {
+    .submit-btn {
       width: 100%;
-      border: none;
-      border-radius: 14px;
       padding: 15px;
+      border: 0;
+      border-radius: 14px;
       background: #4f46e5;
-      color: white;
+      color: #ffffff;
+      font-family: inherit;
       font-size: 17px;
       font-weight: bold;
       cursor: pointer;
-      transition: .2s;
+      transition: background 0.2s ease, transform 0.2s ease;
     }
 
-    button:hover {
+    .submit-btn:hover {
       background: #4338ca;
+      transform: translateY(-1px);
     }
 
-    button:disabled {
+    .submit-btn:disabled {
       background: #9ca3af;
       cursor: not-allowed;
+      transform: none;
+    }
+
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.6;
     }
 
     .success {
-      display: none;
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 12px;
       background: #ecfdf5;
       color: #047857;
-      font-size: 15px;
     }
 
     .error {
-      display: none;
-      margin-top: 15px;
-      color: #dc2626;
-      font-size: 14px;
+      background: #fef2f2;
+      color: #b91c1c;
     }
 
     .footer {
@@ -139,234 +158,370 @@
       color: #9ca3af;
       font-size: 12px;
     }
+
+    @media (max-width: 480px) {
+      .rating-box {
+        padding: 30px 18px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .star {
+        font-size: 43px;
+      }
+    }
   </style>
 </head>
 
 <body>
 
-<div class="rating-box">
+  <main class="rating-box">
 
-  <div class="icon">⭐</div>
+    <div class="icon">⭐</div>
 
-  <h1>ما تقييمك لتجربتك؟</h1>
+    <h1>ما تقييمك لتجربتك؟</h1>
 
-  <p class="subtitle">
-    رأيك يهمنا ويساعدنا على تقديم تجربة أفضل
-  </p>
+    <p class="subtitle">
+      رأيك يهمنا ويساعدنا على تقديم تجربة أفضل
+    </p>
 
-  <!-- Formspree القديم -->
-  <form
-    id="ratingForm"
-    action="https://formspree.io/f/myzwyrjk"
-    method="POST"
-  >
-
-    <div class="stars">
-
-      <span class="star" data-rating="1">★</span>
-      <span class="star" data-rating="2">★</span>
-      <span class="star" data-rating="3">★</span>
-      <span class="star" data-rating="4">★</span>
-      <span class="star" data-rating="5">★</span>
-
-    </div>
-
-    <div id="ratingText">
-      اختر عدد النجوم
-    </div>
-
-    <input
-      type="hidden"
-      name="التقييم"
-      id="ratingInput"
+    <!--
+      Formspree القديم من موقعك
+      سيتم إرسال التقييم والتعليق من خلاله
+    -->
+    <form
+      id="ratingForm"
+      action="https://formspree.io/f/myzwyrjk"
+      method="POST"
     >
 
-    <textarea
-      name="التعليق"
-      placeholder="اكتب رأيك هنا... (اختياري)"
-    ></textarea>
+      <!-- النجوم -->
+      <div
+        class="stars"
+        id="stars"
+        role="radiogroup"
+        aria-label="اختر تقييمك"
+      >
 
-    <button
-      type="submit"
-      id="submitBtn"
-    >
-      إرسال التقييم
-    </button>
+        <button
+          type="button"
+          class="star"
+          data-rating="1"
+          aria-label="نجمة واحدة"
+        >★</button>
 
-    <div class="success" id="successMessage">
-      ✅ تم إرسال تقييمك بنجاح، شكرًا لك!
+        <button
+          type="button"
+          class="star"
+          data-rating="2"
+          aria-label="نجمتان"
+        >★</button>
+
+        <button
+          type="button"
+          class="star"
+          data-rating="3"
+          aria-label="ثلاث نجوم"
+        >★</button>
+
+        <button
+          type="button"
+          class="star"
+          data-rating="4"
+          aria-label="أربع نجوم"
+        >★</button>
+
+        <button
+          type="button"
+          class="star"
+          data-rating="5"
+          aria-label="خمس نجوم"
+        >★</button>
+
+      </div>
+
+      <div id="ratingText">
+        اختر عدد النجوم
+      </div>
+
+      <!-- التقييم الذي سيصل إلى البريد -->
+      <input
+        type="hidden"
+        name="التقييم"
+        id="ratingInput"
+      >
+
+      <!-- التعليق -->
+      <textarea
+        name="التعليق"
+        id="comment"
+        placeholder="اكتب رأيك هنا... (اختياري)"
+      ></textarea>
+
+      <!-- عنوان الرسالة التي تصل إلى Formspree -->
+      <input
+        type="hidden"
+        name="_subject"
+        value="⭐ تقييم جديد من موقعك"
+      >
+
+      <button
+        type="submit"
+        class="submit-btn"
+        id="submitBtn"
+      >
+        إرسال التقييم
+      </button>
+
+      <!-- رسالة النجاح -->
+      <div
+        class="message success"
+        id="successMessage"
+      >
+        ✅ تم إرسال تقييمك بنجاح، شكرًا لك!
+      </div>
+
+      <!-- رسالة الخطأ -->
+      <div
+        class="message error"
+        id="errorMessage"
+      >
+        ❌ حدث خطأ أثناء إرسال التقييم. حاول مرة أخرى.
+      </div>
+
+    </form>
+
+    <div class="footer">
+      شكرًا لمشاركتك رأيك ❤️
     </div>
 
-    <div class="error" id="errorMessage">
-      ❌ حدث خطأ أثناء الإرسال، حاول مرة أخرى.
-    </div>
-
-  </form>
-
-  <div class="footer">
-    شكرًا لمشاركتك رأيك ❤️
-  </div>
-
-</div>
+  </main>
 
 
-<script>
+  <script>
 
-const stars = document.querySelectorAll(".star");
-const ratingInput = document.getElementById("ratingInput");
-const ratingText = document.getElementById("ratingText");
+    /* =========================
+       عناصر الصفحة
+    ========================= */
 
-const ratingNames = {
-  1: "سيئ جدًا 😞",
-  2: "سيئ 😕",
-  3: "متوسط 😐",
-  4: "جيد 🙂",
-  5: "ممتاز جدًا 🤩"
-};
-
-let selectedRating = 0;
+    const form = document.getElementById("ratingForm");
+    const stars = document.querySelectorAll(".star");
+    const ratingInput = document.getElementById("ratingInput");
+    const ratingText = document.getElementById("ratingText");
+    const submitBtn = document.getElementById("submitBtn");
+    const successMessage = document.getElementById("successMessage");
+    const errorMessage = document.getElementById("errorMessage");
 
 
-/* اختيار النجوم */
-stars.forEach(star => {
+    /* =========================
+       أسماء التقييمات
+    ========================= */
 
-  star.addEventListener("click", () => {
-
-    selectedRating = Number(star.dataset.rating);
-
-    ratingInput.value = selectedRating + " / 5";
-
-    stars.forEach(s => {
-
-      const value = Number(s.dataset.rating);
-
-      if (value <= selectedRating) {
-        s.classList.add("active");
-      } else {
-        s.classList.remove("active");
-      }
-
-    });
-
-    ratingText.textContent =
-      ratingNames[selectedRating];
-
-  });
+    const ratingNames = {
+      1: "سيئ جدًا 😞",
+      2: "سيئ 😕",
+      3: "متوسط 😐",
+      4: "جيد 🙂",
+      5: "ممتاز جدًا 🤩"
+    };
 
 
-  /* تأثير المرور بالماوس */
-  star.addEventListener("mouseover", () => {
-
-    const hoverRating = Number(star.dataset.rating);
-
-    stars.forEach(s => {
-
-      const value = Number(s.dataset.rating);
-
-      if (value <= hoverRating) {
-        s.classList.add("active");
-      } else {
-        s.classList.remove("active");
-      }
-
-    });
-
-  });
-
-});
+    let selectedRating = 0;
 
 
-/* إعادة النجوم للتقييم المختار */
-document.querySelector(".stars").addEventListener("mouseleave", () => {
+    /* =========================
+       تحديث النجوم
+    ========================= */
 
-  stars.forEach(s => {
+    function updateStars(rating) {
 
-    const value = Number(s.dataset.rating);
+      stars.forEach(function(star) {
 
-    if (value <= selectedRating) {
-      s.classList.add("active");
-    } else {
-      s.classList.remove("active");
-    }
+        const value = Number(star.dataset.rating);
 
-  });
+        if (value <= rating) {
+          star.classList.add("active");
+        } else {
+          star.classList.remove("active");
+        }
 
-});
-
-
-/* إرسال التقييم */
-
-const form = document.getElementById("ratingForm");
-const submitBtn = document.getElementById("submitBtn");
-const successMessage = document.getElementById("successMessage");
-const errorMessage = document.getElementById("errorMessage");
-
-
-form.addEventListener("submit", async function(e) {
-
-  e.preventDefault();
-
-  if (selectedRating === 0) {
-
-    alert("⭐ الرجاء اختيار عدد النجوم أولًا");
-    return;
-
-  }
-
-  submitBtn.disabled = true;
-  submitBtn.textContent = "جاري الإرسال...";
-
-  try {
-
-    const response = await fetch(form.action, {
-
-      method: "POST",
-
-      body: new FormData(form),
-
-      headers: {
-        "Accept": "application/json"
-      }
-
-    });
-
-
-    if (response.ok) {
-
-      successMessage.style.display = "block";
-      errorMessage.style.display = "none";
-
-      form.reset();
-
-      selectedRating = 0;
-
-      stars.forEach(star => {
-        star.classList.remove("active");
       });
 
-      ratingText.textContent = "تم إرسال التقييم";
-
-      submitBtn.textContent = "تم الإرسال ✓";
-
-    } else {
-
-      throw new Error();
-
     }
 
-  } catch (error) {
 
-    errorMessage.style.display = "block";
-    successMessage.style.display = "none";
+    /* =========================
+       اختيار التقييم
+    ========================= */
 
-    submitBtn.disabled = false;
-    submitBtn.textContent = "إرسال التقييم";
+    stars.forEach(function(star) {
 
-  }
+      star.addEventListener("click", function() {
 
-});
+        selectedRating = Number(this.dataset.rating);
 
-</script>
+        ratingInput.value = selectedRating + " / 5";
+
+        ratingText.textContent =
+          ratingNames[selectedRating];
+
+        updateStars(selectedRating);
+
+      });
+
+
+      /* تأثير عند مرور الماوس */
+
+      star.addEventListener("mouseenter", function() {
+
+        const hoverRating =
+          Number(this.dataset.rating);
+
+        updateStars(hoverRating);
+
+        ratingText.textContent =
+          ratingNames[hoverRating];
+
+      });
+
+    });
+
+
+    /* إعادة التقييم المختار بعد خروج الماوس */
+
+    document
+      .getElementById("stars")
+      .addEventListener("mouseleave", function() {
+
+        updateStars(selectedRating);
+
+        if (selectedRating > 0) {
+
+          ratingText.textContent =
+            ratingNames[selectedRating];
+
+        } else {
+
+          ratingText.textContent =
+            "اختر عدد النجوم";
+
+        }
+
+      });
+
+
+    /* =========================
+       إرسال النموذج إلى Formspree
+    ========================= */
+
+    form.addEventListener("submit", async function(event) {
+
+      event.preventDefault();
+
+
+      /* التأكد من اختيار النجوم */
+
+      if (selectedRating === 0) {
+
+        alert("⭐ الرجاء اختيار تقييمك أولًا");
+
+        return;
+      }
+
+
+      /* إخفاء الرسائل القديمة */
+
+      successMessage.style.display = "none";
+      errorMessage.style.display = "none";
+
+
+      /* تعطيل الزر أثناء الإرسال */
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "جاري إرسال التقييم...";
+
+
+      try {
+
+        const response = await fetch(
+          form.action,
+          {
+            method: "POST",
+            body: new FormData(form),
+            headers: {
+              "Accept": "application/json"
+            }
+          }
+        );
+
+
+        if (response.ok) {
+
+          /* نجاح */
+
+          successMessage.style.display = "block";
+
+          errorMessage.style.display = "none";
+
+          submitBtn.textContent =
+            "تم إرسال التقييم ✓";
+
+
+          /* تنظيف النموذج */
+
+          form.reset();
+
+          selectedRating = 0;
+
+          updateStars(0);
+
+          ratingText.textContent =
+            "تم إرسال التقييم بنجاح";
+
+
+          /* إعادة تفعيل الزر */
+
+          setTimeout(function() {
+
+            submitBtn.disabled = false;
+
+            submitBtn.textContent =
+              "إرسال تقييم جديد";
+
+            ratingText.textContent =
+              "اختر عدد النجوم";
+
+          }, 2500);
+
+
+        } else {
+
+          throw new Error(
+            "Formspree request failed"
+          );
+
+        }
+
+      } catch (error) {
+
+        /* فشل الإرسال */
+
+        successMessage.style.display = "none";
+
+        errorMessage.style.display = "block";
+
+        submitBtn.disabled = false;
+
+        submitBtn.textContent =
+          "إرسال التقييم";
+
+      }
+
+    });
+
+  </script>
 
 </body>
 </html>
